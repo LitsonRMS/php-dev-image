@@ -1,13 +1,13 @@
-# Docker Image for Laravel Development
+# 🐋 Docker Image for Laravel Development
 
-> **This is a development container image and is not suited for production!**
+> ⚠️ **Note** This is a development container image and is not suited for production!
 
 ---
 
 This docker image uses the php-fpm base image from https://github.com/phpdocker-io and comes with required extensions for Laravel
 as well as OPCache and Xdebug. It works well with a separated container running a web server such as Nginx.
 
-## Usage
+## 💻 Usage
 
 The application directory should be bound as a volume to the `/application` directory inside the container.
 
@@ -69,7 +69,7 @@ server {
 }
 ```
 
-## Xdebug
+## ❌ Xdebug
 
 By default, the `xdebug.client_host` is set to `host.docker.internal`, while this is fine for Mac and Windows, Linux
 requires that you set it to the host IP. You can set this value to something else by using the
@@ -77,7 +77,7 @@ requires that you set it to the host IP. You can set this value to something els
 
 > To see all configuration values that are set in the image, refer to the  [php-ini-overrides.ini](./php-ini-overrides.ini) file.
 
-## Installed extensions
+## 📦 Installed extensions
 
 - ca-certificates
 - curl
