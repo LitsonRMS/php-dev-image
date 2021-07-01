@@ -36,4 +36,4 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: litsonrms/php-dev:7.4
+          tags: ${{ env.REGISTRY }}/litsonrms/php-dev:7.4
