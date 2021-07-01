@@ -5,12 +5,9 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  release:
-    types: [ published ]
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: litsonrms/php-dev
 
 jobs:
   build:
@@ -33,10 +30,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      # Build and push image with Buildx (Push only on release)
+      # Build and push image with Buildx (Push only on changes to main)
       - name: Build and push image
         uses: docker/build-push-action@v2.6.1
         with:
           context: .
-          push: ${{ github.event_name == 'release' }}
-          tags: 7.4
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: litsonrms/php-dev:7.4
