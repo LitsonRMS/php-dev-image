@@ -1,4 +1,4 @@
-name: Build 
+name: Build & Publish
 
 on:
   push:
@@ -10,8 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: litsonrms/php-dev
 
 jobs:
   build:
@@ -33,19 +32,11 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Extract metadata (tags, labels)
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v3.3.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
+          
       # Build and push image with Buildx (Push only on release)
       - name: Build and push image
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.6.1
         with:
           context: .
           push: ${{ github.event_name == 'release' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: 7.4
