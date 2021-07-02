@@ -9,7 +9,7 @@ as well as OPCache and Xdebug. It works well with a separated container running 
 
 ## 💻 Usage
 
-The application directory should be bound as a volume to the `/application` directory inside the container.
+The default work directory in the image is `/application`, your application's folder should be bound to this directory in the container.
 
 ### Docker Compose Example With Nginx
 
@@ -23,6 +23,7 @@ version: "3.8"
 services:
 
   app:
+    image: ghcr.io/litsonrms/php-dev:7.4
     volumes:
       - .:/application
 
@@ -45,6 +46,7 @@ server {
 
     access_log /var/log/nginx/application.access.log;
 
+    # root should point to the directory that contains the application entnrypoint
     root /application/public;
     index index.php;
 
@@ -81,25 +83,25 @@ requires that you set it to the host IP. You can set this value to something els
 
 - ca-certificates
 - curl
-- php7.4-apcu
-- php7.4-apcu-bc
-- php7.4-bcmath
-- php7.4-cli
-- php7.4-curl
-- php7.4-gd
-- php7.4-gmp
-- php7.4-imagick
-- php7.4-json
-- php7.4-mbstring
-- php7.4-mysql
-- php7.4-opcache
-- php7.4-readline
-- php7.4-redis
-- php7.4-soap
-- php7.4-sqlite3
-- php7.4-tidy
-- php7.4-xdebug
-- php7.4-xml
-- php7.4-yaml
-- php7.4-zip
+- php-apcu
+- php-apcu-bc
+- php-bcmath
+- php-cli
+- php-curl
+- php-gd
+- php-gmp
+- php-imagick
+- php-json
+- php-mbstring
+- php-mysql
+- php-opcache
+- php-readline
+- php-redis
+- php-soap
+- php-sqlite3
+- php-tidy
+- php-xdebug
+- php-xml
+- php-yaml
+- php-zip
 - unzip
