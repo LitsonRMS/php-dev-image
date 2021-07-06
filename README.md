@@ -1,15 +1,26 @@
 # 🐋 Docker Image for Laravel Development
 
-> ⚠️ **Note** This is a development container image and is not suited for production!
+[![Build & Publish](https://github.com/LitsonRMS/php-dev-image/actions/workflows/build-publish.yml/badge.svg)](https://github.com/LitsonRMS/php-dev-image/actions/workflows/build-publish.yml)
 
 ---
 
-This docker image uses the php-fpm base image from https://github.com/phpdocker-io and comes with required extensions for Laravel
+> ⚠️ **Note** This is a development container image and is not suited for production!
+
+This docker image uses the php-fpm base image from [phpdocker-io](https://github.com/phpdocker-io) and comes with required extensions for Laravel
 as well as OPCache and Xdebug. It works well with a separated container running a web server such as Nginx.
 
 ## 💻 Usage
 
-The default work directory in the image is `/application`, your application's folder should be bound to this directory in the container.
+### Available Tags
+
+> The tag matches the version of PHP installed in the image.
+
+PHP Version|Image Available
+-|-
+< 7.3|Unsupported
+7.3|:white_check_mark:
+7.4|:white_check_mark:
+8.0|Planned
 
 ### Docker Compose Example With Nginx
 
@@ -41,24 +52,30 @@ services:
 
 server {
     listen 80 default;
-    server_name local
+    server_name localhost;
     client_max_body_size 72M;
 
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    charset utf-8;
+
     access_log /var/log/nginx/application.access.log;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
 
     # root should point to the directory that contains the application entnrypoint
     root /application/public;
     index index.php;
 
     location / {
-      try_files $uri /index.php$is_args$args;
+        try_files $uri $uri/ /index.php?$query_string;
     }
 
-    if (!-e $request_filename) {
-        rewrite ^.*$ /index.php last;
-    }
-
-    location ~ \.php$ {       
+    location ~ \.php$ {
         fastcgi_pass app:9000; # 'app' is the name of the service in docker-compose.yml
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -68,10 +85,14 @@ server {
         fastcgi_read_timeout 3600;
         include fastcgi_params;
     }
+
+     location ~ /\.(?!well-known).* {
+        deny all;
+    }
 }
 ```
 
-## ❌ Xdebug
+## ❌debug
 
 By default, the `xdebug.client_host` is set to `host.docker.internal`, while this is fine for Mac and Windows, Linux
 requires that you set it to the host IP. You can set this value to something else by using the
