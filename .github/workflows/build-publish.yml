@@ -1,22 +1,25 @@
 name: Build & Publish
 
 on:
+  # Enable manual runs
+  workflow_dispatch:
+  
   schedule:
     # Run every day at midnight.
     - cron:  '0 0 * * *'
 
   push:
     branches: [ main ]
-    # Changed to the dockerfiles as well as the ini-overrides
-    # in a push on the main branch will trigger this workflow.
+    # Changes to docker and .ini files in a push on the main branch 
+    # will trigger this workflow.
     paths:
       - '**/Dockerfile'
-      - './php-ini-overrides.ini'
+      - '**/*.ini'
       - '.github/workflows/*.yml'
 
   pull_request:
     branches: [ main ]
-    # Only pull requests where the dockerfile has been
+    # Only pull requests where a docker file has been
     # changed will trigger this workflow.
     paths:
       - '**/Dockerfile'
