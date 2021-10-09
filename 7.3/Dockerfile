@@ -7,6 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # host.docker.internal only for Window and Mac.
 # Host IP for Linux.
 ENV XDEBUG_CLIENT_HOST host.docker.internal
+ENV XDEBUG_MODE debug,coverage
 
 # Start as root
 USER root
