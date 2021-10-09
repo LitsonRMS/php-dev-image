@@ -15,16 +15,17 @@ as well as OPCache and Xdebug. It works well with a separated container running 
 
 > The tag matches the version of PHP installed in the image.
 
-PHP Version|Image Available
--|-
-< 7.3|Unsupported
-7.3|:white_check_mark:
-7.4|:white_check_mark:
-8.0|Planned
+| PHP Version | Image Available    |
+|-------------|--------------------|
+| <= 7.2      | Unsupported        |
+| 7.3         | :white_check_mark: |
+| 7.4         | :white_check_mark: |
+| 8.0         | :white_check_mark: |
 
 ### Docker Compose Example With Nginx
 
-This assumes your docker-compose file is in the root directory of your application.
+This configuration assumes you are using Laravel with the `docker-compose.yml` and 
+`nginx.conf` files in the root directory of your application.
 
 ```yaml
 # docker-compose.yml
@@ -34,14 +35,15 @@ version: "3.8"
 services:
 
   app:
-    image: ghcr.io/litsonrms/php-dev:7.4
+    image: ghcr.io/litsonrms/php-dev:8.0
+    workdir: /var/www
     volumes:
-      - .:/application
+      - .:/var/www
 
   webserver:
     image: nginx:alpine
     volumes:
-      - ./public:/application/public:cached
+      - ./public:/var/www/public:cached
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "8088:80"
@@ -92,11 +94,12 @@ server {
 }
 ```
 
-## ❌debug
+## ❌debug default config
 
-By default, the `xdebug.client_host` is set to `host.docker.internal`, while this is fine for Mac and Windows, Linux
-requires that you set it to the host IP. You can set this value to something else by using the
-`XDEBUG_CLIENT_HOST` environment variable when running the container.
+`xdebug.client_host` is set to `host.docker.internal` and can be changed using the `XDEBUG_CLIENT_HOST` environment variable.
+Note: The default should be fine for Mac and Windows, if you are on Linux you should set this to the host IP.
+
+`xdebug.mode` is set to `debug,coverage` and can be changed using the `XDEBUG_MODE` environment variable.
 
 > To see all configuration values that are set in the image, refer to the  [php-ini-overrides.ini](./php-ini-overrides.ini) file.
 
@@ -119,6 +122,7 @@ requires that you set it to the host IP. You can set this value to something els
 - php-readline
 - php-redis
 - php-soap
+- php-swoole
 - php-sqlite3
 - php-tidy
 - php-xdebug
