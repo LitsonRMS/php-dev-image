@@ -26,6 +26,7 @@ RUN apt-get update \
             php7.4-soap  \
             php7.4-tidy  \
             php7.4-yaml  \
+    		php7.4-swoole \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* \
     && echo "pm.max_children = 10" >> /etc/php/7.4/fpm/pool.d/z-overrides.conf
 
