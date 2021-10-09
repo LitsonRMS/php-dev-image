@@ -1,28 +1,15 @@
 name: Build & Publish
 
 on:
-  # Enable manual runs
-  workflow_dispatch:
-  
   schedule:
     # Run every day at midnight.
     - cron:  '0 0 * * *'
 
   push:
     branches: [ main ]
-    # Changes to docker and .ini files in a push on the main branch 
-    # will trigger this workflow.
-    paths:
-      - '**/Dockerfile'
-      - '**/*.ini'
-      - '.github/workflows/*.yml'
 
   pull_request:
     branches: [ main ]
-    # Only pull requests where a docker file has been
-    # changed will trigger this workflow.
-    paths:
-      - '**/Dockerfile'
 
 env:
   REGISTRY: ghcr.io
