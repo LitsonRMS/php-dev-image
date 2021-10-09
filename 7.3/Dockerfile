@@ -26,6 +26,7 @@ RUN apt-get update \
             php7.3-soap  \
             php7.3-tidy  \
             php7.3-yaml  \
+            php7.3-swoole \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* \
     && echo "pm.max_children = 10" >> /etc/php/7.3/fpm/pool.d/z-overrides.conf
 
