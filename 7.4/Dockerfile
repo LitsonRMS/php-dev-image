@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1.2
 FROM phpdockerio/php74-fpm:latest
-WORKDIR "/application"
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
@@ -34,5 +33,3 @@ COPY ../php-ini-overrides.ini /etc/php/7.4/fpm/conf.d/99-overrides.ini
 # Set www-data user id and group id to pervent permissions errors
 RUN groupmod -g ${GROUP_ID:-1000} -o www-data \
     && usermod -u ${USER_ID:-1000} -g ${GROUP_ID:-1000} -o www-data
-
-VOLUME /application
