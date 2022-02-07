@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # syntax=docker/dockerfile:1.3
-FROM phpdockerio/php80-fpm:latest
-
-# Fix debconf warnings upon build
-ARG DEBIAN_FRONTEND=noninteractive
+FROM phpdockerio/php:8.0-fpm
 
 # host.docker.internal only for Window and Mac.
 # Host IP for Linux.
