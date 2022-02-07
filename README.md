@@ -37,7 +37,7 @@ services:
 
   app:
     image: ghcr.io/litsonrms/php-dev:8.1
-    workdir: /var/www
+    working_dir: /var/www
     volumes:
       - .:/var/www
 
