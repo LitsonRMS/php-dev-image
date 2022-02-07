@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # syntax=docker/dockerfile:1.3
-FROM phpdockerio/php:7.3-fpm
+FROM phpdockerio/php73-fpm:latest
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
