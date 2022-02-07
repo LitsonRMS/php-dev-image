@@ -21,6 +21,7 @@ as well as OPCache and Xdebug. It works well with a separated container running 
 | 7.3         | :white_check_mark: |
 | 7.4         | :white_check_mark: |
 | 8.0         | :white_check_mark: |
+| 8.1         | :white_check_mark: |
 
 ### Docker Compose Example With Nginx
 
@@ -35,7 +36,7 @@ version: "3.8"
 services:
 
   app:
-    image: ghcr.io/litsonrms/php-dev:8.0
+    image: ghcr.io/litsonrms/php-dev:8.1
     workdir: /var/www
     volumes:
       - .:/var/www
