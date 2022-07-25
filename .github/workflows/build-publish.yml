@@ -43,7 +43,7 @@ jobs:
 
       - name: Build and push image
         id: build_push_step
-        uses: docker/build-push-action@v3.0.0
+        uses: docker/build-push-action@v3.1.0
         with:
           context: .
           file: ./${{ matrix.php }}/Dockerfile
