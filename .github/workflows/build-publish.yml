@@ -24,7 +24,7 @@ jobs:
 
     strategy:
       matrix:
-        php: ['7.3', '7.4', '8.0', '8.1']
+        php: ['7.4', '8.0', '8.1']
 
     steps:
       - name: Checkout
@@ -45,8 +45,9 @@ jobs:
         id: build_push_step
         uses: docker/build-push-action@v3.1.1
         with:
-          context: .
-          file: ./${{ matrix.php }}/Dockerfile
+          context: ./src
+          build-args: |
+            PHP_VERSION=${{ matrix.php }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/litsonrms/php-dev:${{ matrix.php }}
 

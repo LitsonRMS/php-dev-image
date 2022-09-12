@@ -15,13 +15,13 @@ as well as OPCache and Xdebug. It works well with a separated container running 
 
 > The tag matches the version of PHP installed in the image.
 
-| PHP Version | Image Available    |
-|-------------|--------------------|
-| <= 7.2      | Unsupported        |
-| 7.3         | :white_check_mark: |
-| 7.4         | :white_check_mark: |
-| 8.0         | :white_check_mark: |
-| 8.1         | :white_check_mark: |
+| PHP Version | Image Available | Daily Builds |
+|:-----------:|:---------------:|:------------:|
+|   <= 7.2    |        ❌        |      ❌       |
+|     7.3     |        ✅        |      ❌       |
+|     7.4     |        ✅        |      ✅       |
+|     8.0     |        ✅        |      ✅       |
+|     8.1     |        ✅        |      ✅       |
 
 ### Docker Compose Example With Nginx
 
