@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# syntax=docker/dockerfile:1.3
+# syntax=docker/dockerfile:1
 ARG PHP_VERSION
 FROM phpdockerio/php:${PHP_VERSION}-fpm
 
@@ -21,13 +21,14 @@ FROM phpdockerio/php:${PHP_VERSION}-fpm
 ENV XDEBUG_CLIENT_HOST host.docker.internal
 ENV XDEBUG_MODE debug,coverage
 
-# Start as root
-USER root
+RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
 
 ARG PHP_VERSION
 
-RUN apt-get update \
-    && apt-get -y --no-install-recommends install \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+ 	apt update && apt-get -y --no-install-recommends install \
             php${PHP_VERSION}-mysql \
             php${PHP_VERSION}-redis \
             php${PHP_VERSION}-sqlite3 \
