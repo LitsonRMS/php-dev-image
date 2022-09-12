@@ -47,7 +47,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 COPY php-ini-overrides.ini /etc/php/${PHP_VERSION}/fpm/conf.d/99-overrides.ini
 
-RUN groupmod -g ${GROUP_ID:-1000} -o www-data \
+ADD --chown=${GROUP_ID:-1000}:${GROUP_ID:-1000} https://cs.symfony.com/download/php-cs-fixer-v3.phar /usr/local/bin/php-cs-fixer
+
+RUN chmod a+x /usr/local/bin/php-cs-fixer \
+    && groupmod -g ${GROUP_ID:-1000} -o www-data \
     && usermod -u ${USER_ID:-1000} -g ${GROUP_ID:-1000} -o www-data \
     && chown -R www-data:www-data /run
 
