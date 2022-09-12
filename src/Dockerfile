@@ -47,6 +47,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 COPY php-ini-overrides.ini /etc/php/${PHP_VERSION}/fpm/conf.d/99-overrides.ini
 
-# Set www-data user id and group id to pervent permissions errors
 RUN groupmod -g ${GROUP_ID:-1000} -o www-data \
-    && usermod -u ${USER_ID:-1000} -g ${GROUP_ID:-1000} -o www-data
+    && usermod -u ${USER_ID:-1000} -g ${GROUP_ID:-1000} -o www-data \
+    && chown -R www-data:www-data /run
+
+USER www-data
