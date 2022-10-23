@@ -25,6 +25,7 @@ ARG USER_HOME=/home/www-data
 # Host IP for Linux.
 ENV XDEBUG_CLIENT_HOST host.docker.internal
 ENV XDEBUG_MODE debug,coverage
+ENV COMPOSER_HOME ${USER_HOME}/.composer
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
     echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
