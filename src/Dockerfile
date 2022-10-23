@@ -16,6 +16,11 @@
 ARG PHP_VERSION
 FROM phpdockerio/php:${PHP_VERSION}-fpm
 
+USER root
+
+ARG PHP_VERSION
+ARG USER_HOME=/home/www-data
+
 # host.docker.internal only for Window and Mac.
 # Host IP for Linux.
 ENV XDEBUG_CLIENT_HOST host.docker.internal
@@ -23,8 +28,6 @@ ENV XDEBUG_MODE debug,coverage
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
     echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
-
-ARG PHP_VERSION
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -51,7 +54,9 @@ ADD --chown=${GROUP_ID:-1000}:${GROUP_ID:-1000} https://cs.symfony.com/download/
 
 RUN chmod a+x /usr/local/bin/php-cs-fixer \
     && groupmod -g ${GROUP_ID:-1000} -o www-data \
+    && usermod -d ${USER_HOME} www-data \
     && usermod -u ${USER_ID:-1000} -g ${GROUP_ID:-1000} -o www-data \
-    && chown -R www-data:www-data /run
+    && mkdir ${USER_HOME} \
+    && chown -R www-data:www-data /run /var/tmp ${USER_HOME}
 
 USER www-data
