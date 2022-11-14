@@ -45,6 +45,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
             php${PHP_VERSION}-tidy  \
             php${PHP_VERSION}-yaml  \
     		php${PHP_VERSION}-swoole \
+            php${PHP_VERSION}-intl \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* \
     && echo "pm.max_children = 10" >> /etc/php/${PHP_VERSION}/fpm/pool.d/z-overrides.conf
 
