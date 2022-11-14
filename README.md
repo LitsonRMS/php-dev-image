@@ -116,6 +116,7 @@ Note: The default should be fine for Mac and Windows, if you are on Linux you sh
 - php-gd
 - php-gmp
 - php-imagick
+- php-intl
 - php-json
 - php-mbstring
 - php-mysql
