@@ -13,15 +13,19 @@ as well as OPCache and Xdebug. It works well with a separated container running 
 
 ### Available Tags
 
-> The tag matches the version of PHP installed in the image.
+Daily builds are done for all versions of PHP which still receive security
+updates as shown on https://www.php.net/supported-versions.php.
+
+> **Note** The tag matches the version of PHP installed in the image.
 
 | PHP Version | Image Available | Daily Builds |
 |:-----------:|:---------------:|:------------:|
 |   <= 7.2    |        ❌        |      ❌       |
 |     7.3     |        ✅        |      ❌       |
-|     7.4     |        ✅        |      ✅       |
+|     7.4     |        ✅        |      ❌       |
 |     8.0     |        ✅        |      ✅       |
 |     8.1     |        ✅        |      ✅       |
+|     8.2     |        ✅        |      ✅       |
 
 ### Docker Compose Example With Nginx
 
@@ -30,13 +34,10 @@ This configuration assumes you are using Laravel with the `docker-compose.yml` a
 
 ```yaml
 # docker-compose.yml
-
-version: "3.8"
-
 services:
 
   app:
-    image: ghcr.io/litsonrms/php-dev:8.1
+    image: ghcr.io/litsonrms/php-dev:8.2
     working_dir: /var/www
     volumes:
       - .:/var/www
@@ -70,7 +71,7 @@ server {
 
     error_page 404 /index.php;
 
-    # root should point to the directory that contains the application entnrypoint
+    # root should point to the directory that contains the application entrypoint
     root /application/public;
     index index.php;
 
