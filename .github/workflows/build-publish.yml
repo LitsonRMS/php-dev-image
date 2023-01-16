@@ -43,7 +43,7 @@ jobs:
 
       - name: Build and push image
         id: build_push_step
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v3.3.0
         with:
           context: ./src
           build-args: |
