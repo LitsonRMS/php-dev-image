@@ -10,5 +10,3 @@ updates:
       day: "monday"
       time: "11:00"
       timezone: "Africa/Johannesburg"
-    reviewers:
-      - "litsonrms/etools"
