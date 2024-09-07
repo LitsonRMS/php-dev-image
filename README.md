@@ -26,6 +26,7 @@ updates as shown on https://www.php.net/supported-versions.php.
 |     8.0     |        ✅        |      ❌       |
 |     8.1     |        ✅        |      ✅       |
 |     8.2     |        ✅        |      ✅       |
+|     8.3     |        ✅        |      ✅       |
 
 ### Docker Compose Example With Nginx
 
