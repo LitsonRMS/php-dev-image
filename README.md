@@ -4,16 +4,17 @@
 
 ---
 
-> ⚠️ **Note** This is a development container image and is not suited for production!
+> [!IMPORTANT]
+> ⚠️ This is a development container image and is not suited for production!
 
-This docker image uses the php-fpm base image from [phpdocker-io](https://github.com/phpdocker-io) and comes with required extensions for Laravel
-as well as OPCache and Xdebug. It works well with a separated container running a web server such as Nginx.
+This Docker image uses the php-fpm base image from [phpdocker-io](https://github.com/phpdocker-io) and comes with required extensions for Laravel
+as well as OPCache and Xdebug. It works well with a separate container running a web server such as Nginx.
 
 ## 💻 Usage
 
 ### Available Tags
 
-Daily builds are done for all versions of PHP which still receive security
+Daily builds are done for all versions of PHP, which still receive security
 updates as shown on https://www.php.net/supported-versions.php.
 
 > **Note** The tag matches the version of PHP installed in the image.
@@ -24,9 +25,11 @@ updates as shown on https://www.php.net/supported-versions.php.
 |     7.3     |        ✅        |      ❌       |
 |     7.4     |        ✅        |      ❌       |
 |     8.0     |        ✅        |      ❌       |
-|     8.1     |        ✅        |      ✅       |
+|     8.1     |        ✅        |      ❌       |
 |     8.2     |        ✅        |      ✅       |
 |     8.3     |        ✅        |      ✅       |
+|     8.4     |        ✅        |      ✅       |
+|     8.5     |        ✅        |      ✅       |
 
 ### Docker Compose Example With Nginx
 
@@ -100,10 +103,10 @@ server {
 ## ❌debug default config
 
 `xdebug.client_host` is set to `host.docker.internal` and can be changed using the `XDEBUG_CLIENT_HOST` environment variable.
-Note: The default should be fine for Mac and Windows, if you are on Linux you should set this to the host IP.
 
 `xdebug.mode` is set to `debug,coverage` and can be changed using the `XDEBUG_MODE` environment variable.
 
+> [!NOTE]
 > To see all configuration values that are set in the image, refer to the  [php-ini-overrides.ini](./php-ini-overrides.ini) file.
 
 ## 📦 Installed extensions
