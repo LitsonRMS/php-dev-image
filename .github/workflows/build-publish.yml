@@ -27,6 +27,7 @@ jobs:
     strategy:
       matrix:
         php: ['8.2', '8.3', '8.4', '8.5']
+        variant: [fpm, frankenphp]
 
     steps:
       - name: Checkout
@@ -48,12 +49,13 @@ jobs:
         uses: docker/build-push-action@v6.19.0
         with:
           context: ./src
+          file: ./src/${{ matrix.variant == 'frankenphp' && 'Dockerfile.frankenphp' || 'Dockerfile' }}
           build-args: |
             PHP_VERSION=${{ matrix.php }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/litsonrms/php-dev:${{ matrix.php }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: ${{ env.REGISTRY }}/litsonrms/php-dev:${{ matrix.variant == 'frankenphp' && 'frankenphp-' || '' }}${{ matrix.php }}
+          cache-from: type=gha,scope=php-dev-${{ matrix.variant }}-${{ matrix.php }}
+          cache-to: type=gha,mode=max,scope=php-dev-${{ matrix.variant }}-${{ matrix.php }}
 
       - name: Image digest
         if: github.event_name != 'pull_request'
