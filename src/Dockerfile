@@ -20,6 +20,8 @@ USER root
 
 ARG PHP_VERSION
 ARG USER_HOME=/home/www-data
+ARG USER_ID=1000
+ARG GROUP_ID=1000
 
 # host.docker.internal only for Window and Mac.
 # Host IP for Linux.
@@ -52,12 +54,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 COPY php-ini-overrides.ini /etc/php/${PHP_VERSION}/fpm/conf.d/99-overrides.ini
 
-ADD --chown=${GROUP_ID:-1000}:${GROUP_ID:-1000} https://cs.symfony.com/download/php-cs-fixer-v3.phar /usr/local/bin/php-cs-fixer
+ADD --chown=${GROUP_ID}:${GROUP_ID} https://cs.symfony.com/download/php-cs-fixer-v3.phar /usr/local/bin/php-cs-fixer
 
 RUN chmod a+x /usr/local/bin/php-cs-fixer \
-    && groupmod -g ${GROUP_ID:-1000} -o www-data \
+    && groupmod -g ${GROUP_ID} -o www-data \
     && usermod -d ${USER_HOME} www-data \
-    && usermod -u ${USER_ID:-1000} -g ${GROUP_ID:-1000} -o www-data \
+    && usermod -u ${USER_ID} -g ${GROUP_ID} -o www-data \
     && mkdir ${USER_HOME} \
     && chown -R www-data:www-data /run /var/tmp ${USER_HOME}
 
