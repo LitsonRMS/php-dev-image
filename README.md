@@ -146,7 +146,7 @@ volumes:
 
 {$CADDY_EXTRA_CONFIG}
 
-:8080 {
+{$SERVER_NAME:localhost} {
         root /app/public
         encode zstd br gzip
 
