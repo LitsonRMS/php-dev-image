@@ -7,8 +7,10 @@
 > [!IMPORTANT]
 > ⚠️ This is a development container image and is not suited for production!
 
-This Docker image uses the php-fpm base image from [phpdocker-io](https://github.com/phpdocker-io) and comes with required extensions for Laravel
-as well as OPCache and Xdebug. It works well with a separate container running a web server such as Nginx.
+This repository publishes PHP development images based on [phpdocker-io](https://github.com/phpdocker-io) PHP-FPM
+and [FrankenPHP](https://frankenphp.dev/). Both images come with required extensions for Laravel, as well as
+OPCache and Xdebug. The PHP-FPM image works well with a separate web server such as Nginx, while the FrankenPHP
+image includes Caddy and serves the application directly.
 
 ## 💻 Usage
 
@@ -17,19 +19,20 @@ as well as OPCache and Xdebug. It works well with a separate container running a
 Daily builds are done for all versions of PHP, which still receive security
 updates as shown on https://www.php.net/supported-versions.php.
 
-> **Note** The tag matches the version of PHP installed in the image.
+> [!NOTE]
+> FPM tags match the version of PHP installed in the image. FrankenPHP tags use the `frankenphp-<version>` format.
 
-| PHP Version | Image Available | Daily Builds |
-|:-----------:|:---------------:|:------------:|
-|   <= 7.2    |        ❌        |      ❌       |
-|     7.3     |        ✅        |      ❌       |
-|     7.4     |        ✅        |      ❌       |
-|     8.0     |        ✅        |      ❌       |
-|     8.1     |        ✅        |      ❌       |
-|     8.2     |        ✅        |      ✅       |
-|     8.3     |        ✅        |      ✅       |
-|     8.4     |        ✅        |      ✅       |
-|     8.5     |        ✅        |      ✅       |
+| PHP Version | FPM Image | FrankenPHP Image | Daily Builds |
+|:-----------:|:---------:|:----------------:|:------------:|
+|   <= 7.2    |    ❌     |        ❌        |      ❌      |
+|     7.3     |    ✅     |        ❌        |      ❌      |
+|     7.4     |    ✅     |        ❌        |      ❌      |
+|     8.0     |    ✅     |        ❌        |      ❌      |
+|     8.1     |    ✅     |        ❌        |      ❌      |
+|     8.2     |    ✅     |        ✅        |      ✅      |
+|     8.3     |    ✅     |        ✅        |      ✅      |
+|     8.4     |    ✅     |        ✅        |      ✅      |
+|     8.5     |    ✅     |        ✅        |      ✅      |
 
 ### Docker Compose Example With Nginx
 
@@ -100,6 +103,59 @@ server {
 }
 ```
 
+### Docker Compose Example With FrankenPHP
+
+The FrankenPHP image includes Caddy, so a separate Nginx container is not needed.
+You should mount your application in /app and if needed a custom Caddyfile at 
+`/etc/frankenphp/Caddyfile` to configure the Caddy server.
+
+```yaml
+# docker-compose.yaml
+services:
+
+  app:
+    image: ghcr.io/litsonrms/php-dev:frankenphp-8.2
+    working_dir: /app
+    environment:
+      SERVER_NAME: ":80"
+    volumes:
+      - .:/app
+      - ./Caddyfile:/etc/frankenphp/Caddyfile
+      - caddy_data:/data/caddy
+      - caddy_config:/config/caddy
+    ports:
+      - "8088:80"
+    tty: true
+
+volumes:
+  caddy_data:
+  caddy_config:
+```
+
+```caddyfile
+# Caddyfile
+{
+        skip_install_trust
+
+        {$CADDY_GLOBAL_OPTIONS}
+        auto_https off
+        frankenphp {
+                {$FRANKENPHP_CONFIG}
+        }
+}
+
+{$CADDY_EXTRA_CONFIG}
+
+:8080 {
+        root /app/public
+        encode zstd br gzip
+
+        {$CADDY_SERVER_EXTRA_DIRECTIVES}
+
+        php_server
+}
+```
+
 ## ❌debug default config
 
 `xdebug.client_host` is set to `host.docker.internal` and can be changed using the `XDEBUG_CLIENT_HOST` environment variable.
@@ -110,6 +166,9 @@ server {
 > To see all configuration values that are set in the image, refer to the  [php-ini-overrides.ini](./php-ini-overrides.ini) file.
 
 ## 📦 Installed extensions
+
+The FrankenPHP image includes the same development extensions where supported. The APCu backward-compatibility
+extension is omitted from FrankenPHP because it is not compatible with its current PHP builds.
 
 - ca-certificates
 - curl
