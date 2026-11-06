@@ -47,6 +47,7 @@ RUN apt-get update && apt-get install -y unzip git \
         yaml \
         opcache \
         intl \
+        pcntl \
         zip
 
 COPY php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
